@@ -101,15 +101,15 @@ DHT dht(DHTpin, DHTTYPE);
 #endif
 
 // Temporary Variables 
-CRGB ledArray[Leds]
+CRGB ledArray[Leds];
 
 void setup() {
   Serial.begin(115200);  // INIT SERIAL  
 
   // INITIALIZE ALL SENSORS AND DEVICES
-  dht.begin();
-   FastLED.addLeds<NEOPIXEL, DATA_PIN>(ledArray, Leds);  // GRB ordering is assumed
   
+   FastLED.addLeds<NEOPIXEL, LedData>(ledArray, Leds);  // GRB ordering is assumed
+  dht.begin();
   Serial.println(F("DHTxx test!"));
   
   /* Add all other necessary sensor Initializations and Configurations here */
@@ -232,20 +232,20 @@ void callback(char* topic, byte* payload, unsigned int length) {
   if (strcmp(type, "controls") == 0){
     // 1. EXTRACT ALL PARAMETERS: NODES, RED,GREEN, BLUE, AND BRIGHTNESS FROM JSON OBJECT
     const int brightness = doc["brightness"];
-    const int led = doc["leds"];
+    const int nodes = doc["leds"];
     const int red = doc["color"]["r"];
     const int green = doc["color"]["g"];
     const int blue = doc["color"]["b"];
     const int alpha = doc["color"]["a"];
     // 2. ITERATIVELY, TURN ON LED(s) BASED ON THE VALUE OF NODES. Ex IF NODES = 2, TURN ON 2 LED(s)
-     for(int x=0; x<led; x++){
+     for(int x=0; x<nodes; x++){
       ledArray[x] = CRGB( red, green, blue); // R, G, B range for each value is 0 to 255
       FastLED.setBrightness( brightness ); // Ranges from 0 to 255
       FastLED.show(); // Send changes to LED array
       vTaskDelay(50 / portTICK_PERIOD_MS);
     }
     // 3. ITERATIVELY, TURN OFF ALL REMAINING LED(s).
-    for(int x=led; x<Leds; x++){
+    for(int x=nodes; x<Leds; x++){
       ledArray[x] = CRGB::Black;
       FastLED.setBrightness( brightness );
       FastLED.show();
