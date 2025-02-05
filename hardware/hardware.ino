@@ -38,7 +38,7 @@
 
 // DEFINE VARIABLES
 #define ARDUINOJSON_USE_DOUBLE      1 
-#define Leds 26
+#define Leds 7
 #define LedData 25
 
 // DEFINE THE CONTROL PINS FOR THE DHT22 
