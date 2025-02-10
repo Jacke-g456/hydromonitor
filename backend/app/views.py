@@ -32,6 +32,16 @@ def get_all(start,end):
     if request.method == "GET":
         '''Add your code here to complete this route'''
 
+        try:
+            begin=escape(start)
+            stop=escape(end)
+            all=mongo.getAllInRange(begin,stop)
+            if all:
+                return jsonify({"status":"found","data": all}) 
+
+        except Exception as e: 
+            print(f"get_all error: f{str(e)}")    
+
     # FILE DATA NOT EXIST
     return jsonify({"status":"not found","data":[]})
    
@@ -43,6 +53,16 @@ def get_temperature_mmar(start,end):
    
     if request.method == "GET": 
         '''Add your code here to complete this route'''
+        try:
+            begin=escape(start)
+            stop=escape(end)
+            temp_mmar=mongo.temperatureMMAR(begin,stop)
+            if temp_mmar:
+                return jsonify({"status":"found","data": temp_mmar}) 
+
+        except Exception as e: 
+            print(f"get_temperature_mmar error: f{str(e)}")    
+
 
     # FILE DATA NOT EXIST
     return jsonify({"status":"not found","data":[]})
@@ -57,6 +77,17 @@ def get_humidity_mmar(start,end):
    
     if request.method == "GET": 
         '''Add your code here to complete this route'''
+        try:
+            begin=escape(start)
+            stop=escape(end)
+            humid_mmar=mongo.humidityMMAR(begin,stop)
+            if humid_mmar:
+                return jsonify({"status":"found","data": humid_mmar}) 
+
+        except Exception as e: 
+            print(f"get_hummidity_mmar error: f{str(e)}")    
+
+        
 
     # FILE DATA NOT EXIST
     return jsonify({"status":"not found","data":[]})
@@ -70,7 +101,17 @@ def get_freq_distro(variable,start,end):
     '''RETURNS FREQUENCY DISTRIBUTION FOR SPECIFIED VARIABLE'''
    
     if request.method == "GET": 
-        '''Add your code here to complete this route'''         
+        '''Add your code here to complete this route''' 
+        try:
+            begin=escape(start)
+            stop=escape(end)
+            vary=escape(variable)
+            frequency=mongo.frequencyDistro(vary,begin,stop)
+            if frequency:
+                return jsonify({"status":"found","data": frequency}) 
+
+        except Exception as e: 
+            print(f"get_freq_distro error: f{str(e)}")        
 
     # FILE DATA NOT EXIST
     return jsonify({"status":"not found","data":[]})
