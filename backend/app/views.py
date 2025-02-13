@@ -36,6 +36,7 @@ def get_all(start,end):
             begin=escape(start)
             stop=escape(end)
             all=mongo.getAllInRange(begin,stop)
+            print(all)
             if all:
                 return jsonify({"status":"found","data": all}) 
 
